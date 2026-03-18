@@ -1,0 +1,13 @@
+{
+  "name": "saginaw-bay-report",
+  "version": "1.0.0",
+  "description": "Live Saginaw Bay fishing conditions — walleye, perch, pike",
+  "type": "module",
+  "dependencies": {
+    "@upstash/redis": "^1.34.0",
+    "@anthropic-ai/sdk": "^0.36.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
