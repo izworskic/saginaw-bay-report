@@ -3,9 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Saginaw Bay Fishing Report — Live Walleye, Perch, Pike Conditions</title>
-<meta name="description" content="Live Saginaw Bay fishing conditions. Wind, water clarity, and zone-by-zone walleye and perch reports updated daily. Bay City, Thomas Road, Wildfowl Bay.">
+<title>Saginaw Bay Fishing Report — Live Walleye, Perch & Pike Conditions</title>
+<meta name="description" content="Live Saginaw Bay fishing conditions for walleye, perch, and pike. Real-time USGS river data, NOAA wind buoy readings, NWS weather, and weekly DNR fishing reports for Bay City, Thomas Road, Wildfowl Bay, and all three bay zones.">
+<meta name="author" content="Chris Izworski">
 <link rel="canonical" href="https://saginaw-bay-report.vercel.app/">
+<meta property="og:title" content="Saginaw Bay Fishing Report — Live Conditions">
+<meta property="og:description" content="Live USGS and NOAA data for Saginaw Bay walleye and perch fishing. Wind, turbidity, river flow, and daily conditions brief.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://saginaw-bay-report.vercel.app/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://chrisizworski.com/#person",
+      "name": "Chris Izworski",
+      "url": "https://chrisizworski.com/",
+      "jobTitle": "Solutions Consultant",
+      "address": { "@type": "PostalAddress", "addressLocality": "Bay City", "addressRegion": "MI" },
+      "sameAs": ["https://freighterviewfarms.com", "https://github.com/izworskic"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://saginaw-bay-report.vercel.app/",
+      "url": "https://saginaw-bay-report.vercel.app/",
+      "name": "Saginaw Bay Fishing Report",
+      "description": "Live Saginaw Bay fishing conditions — walleye, perch, pike",
+      "author": { "@id": "https://chrisizworski.com/#person" }
+    }
+  ]
+}
+</script>
 <style>
 /* ── Reset ─────────────────────────────── */
 *{margin:0;padding:0;box-sizing:border-box}
@@ -574,7 +603,13 @@ a:hover { text-decoration: underline; }
 </div>
 
 <footer class="site-footer" id="siteFooter" style="display:none">
-  <span>Bay City, Michigan &nbsp;·&nbsp; Wind: NDBC SBLM4 &nbsp;·&nbsp; Water: USGS &nbsp;·&nbsp; Weather: NWS</span>
+  <span>
+    Built by <a href="https://chrisizworski.com" target="_blank" rel="noopener">Chris Izworski</a>
+    &nbsp;·&nbsp; Bay City, Michigan
+    &nbsp;·&nbsp; <a href="https://freighterviewfarms.com" target="_blank" rel="noopener">Freighter View Farms</a>
+    &nbsp;·&nbsp; <a href="https://chrisizworski.com/michigan-trout-streams/" target="_blank" rel="noopener">Michigan Trout Streams</a>
+    &nbsp;·&nbsp; Wind: NDBC SBLM4 &nbsp;·&nbsp; Water: USGS &nbsp;·&nbsp; Weather: NWS
+  </span>
   <span id="lastUpdated"></span>
 </footer>
 
@@ -900,8 +935,9 @@ async function loadApp() {
     document.getElementById('siteFooter').style.display = 'flex';
 
     if (data.generatedAt) {
+      const cacheLabel = data.cached ? ' (cached)' : ' (fresh)';
       document.getElementById('lastUpdated').textContent =
-        'Updated ' + new Date(data.generatedAt).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZoneName:'short'});
+        'Updated ' + new Date(data.generatedAt).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZoneName:'short'}) + cacheLabel;
     }
 
     // Load AI brief separately (avoids timeout on main endpoint)
