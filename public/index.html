@@ -705,7 +705,13 @@ async function loadApp() {
     const html = [
       buildWindHero(data.wind),
       buildWaterBar(data.water, data.water?.lakeLevel),
-      buildBrief(data.brief, data.season),
+      // Brief placeholder — loads async below
+      `<div class="brief-section" id="briefSection">
+        <div class="brief-card">
+          <div class="brief-label">🎣 Conditions Brief — ${data.season?.label || 'Today'}</div>
+          <div class="brief-text" id="briefText" style="color:#aaa;font-style:italic">Generating brief...</div>
+        </div>
+      </div>`,
       `<div class="zones-section">
         <div class="section-title">Bay Zones — Current Conditions</div>
         <div class="zones-grid">
@@ -724,9 +730,38 @@ async function loadApp() {
       document.getElementById('lastUpdated').textContent =
         'Updated ' + new Date(data.generatedAt).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZoneName:'short'});
     }
+
+    // Load AI brief separately (avoids timeout on main endpoint)
+    loadBrief(data.season?.label || 'Today');
+
   } catch(e) {
     document.getElementById('appRoot').innerHTML = `
       <div class="loading">Failed to load bay conditions.<br><small>${e.message}</small></div>`;
+  }
+}
+
+async function loadBrief(seasonLabel) {
+  try {
+    const resp = await fetch('/api/brief');
+    if (!resp.ok) return;
+    const data = await resp.json();
+    const el = document.getElementById('briefText');
+    if (!el) return;
+    if (data.success && data.brief) {
+      const paragraphs = data.brief.split(/\n+/).filter(Boolean)
+        .map(p => `<p>${p}</p>`).join('');
+      el.innerHTML = paragraphs;
+      el.style.color = '';
+      el.style.fontStyle = '';
+      // Update brief label with season
+      const label = document.querySelector('.brief-label');
+      if (label && data.season?.label) label.textContent = `🎣 Conditions Brief — ${data.season.label}`;
+    } else {
+      el.textContent = 'Brief unavailable. Check back shortly.';
+    }
+  } catch(e) {
+    const el = document.getElementById('briefText');
+    if (el) el.textContent = 'Brief unavailable. Check back shortly.';
   }
 }
 
