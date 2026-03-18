@@ -403,7 +403,88 @@ a:hover { text-decoration: underline; }
 .report-card-text { font-size: 13px; color: #444; line-height: 1.65; font-family: sans-serif; }
 .report-card-link { font-size: 12px; color: var(--bay); font-family: sans-serif; margin-top: 8px; display: block; }
 
-/* ── Loading / Error ────────────────────── */
+/* ── Modal ──────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(15,25,40,0.75);
+  z-index: 100;
+  display: flex; align-items: flex-end; justify-content: center;
+  backdrop-filter: blur(2px);
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--fog);
+  width: 100%; max-width: 620px;
+  max-height: 90vh;
+  border-radius: 12px 12px 0 0;
+  overflow-y: auto;
+  transform: translateY(40px);
+  transition: transform .25s ease;
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+.modal-top {
+  color: #fff;
+  padding: 20px 20px 16px;
+  border-radius: 12px 12px 0 0;
+  position: relative;
+}
+.modal-close {
+  position: absolute; top: 14px; right: 16px;
+  background: rgba(255,255,255,0.15);
+  border: none; color: #fff; font-size: 18px;
+  width: 30px; height: 30px; border-radius: 50%;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  line-height: 1;
+}
+.modal-zone-name { font-size: 22px; font-weight: normal; margin-bottom: 2px; }
+.modal-zone-sub  { font-size: 12px; opacity: .65; font-family: sans-serif; letter-spacing: .3px; }
+.modal-rating-row { margin-top: 10px; display: flex; align-items: center; gap: 10px; }
+.modal-rating-badge {
+  font-size: 14px; font-weight: bold; font-family: sans-serif;
+  background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 3px;
+}
+.modal-rating-tagline { font-size: 13px; opacity: .75; font-style: italic; }
+.modal-body { padding: 18px 20px; }
+.modal-section { margin-bottom: 18px; }
+.modal-section-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px;
+  color: var(--steel); font-family: sans-serif; margin-bottom: 8px;
+}
+.modal-desc { font-size: 14px; color: var(--slate); line-height: 1.7; }
+.modal-hotspots {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;
+}
+.modal-spot {
+  background: var(--fog-dk); border: 1px solid var(--border);
+  border-radius: 3px; padding: 4px 10px;
+  font-size: 12px; color: var(--slate); font-family: sans-serif;
+}
+.modal-launches { font-size: 13px; color: var(--steel); font-family: sans-serif; }
+.modal-report {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  padding: 12px 14px; margin-bottom: 8px;
+}
+.modal-report-source {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .8px;
+  color: var(--amber); font-family: sans-serif; margin-bottom: 4px;
+}
+.modal-report-text { font-size: 13px; color: #444; line-height: 1.65; font-family: sans-serif; }
+.modal-report-link { font-size: 12px; color: var(--bay); font-family: sans-serif; display: block; margin-top: 6px; }
+.modal-species {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.modal-species-tag {
+  background: var(--bay); color: #fff;
+  font-size: 12px; padding: 3px 10px; border-radius: 3px; font-family: sans-serif;
+  text-transform: capitalize;
+}
+
+@media (min-width: 620px) {
+  .modal { border-radius: 12px; margin-bottom: 40px; }
+  .modal-overlay { align-items: center; }
+}
 .loading {
   text-align: center;
   padding: 60px 20px;
@@ -468,6 +549,22 @@ a:hover { text-decoration: underline; }
     </nav>
   </div>
 </header>
+
+<!-- Zone detail modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-top" id="modalTop">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-zone-name" id="modalName"></div>
+      <div class="modal-zone-sub" id="modalSub"></div>
+      <div class="modal-rating-row">
+        <span class="modal-rating-badge" id="modalRatingBadge"></span>
+        <span class="modal-rating-tagline" id="modalRatingTagline"></span>
+      </div>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
 
 <div id="appRoot">
   <div class="loading">
@@ -689,10 +786,82 @@ function buildReports(reports) {
   </div>`;
 }
 
-// ── Zone detail (click through) ───────────
+// ── Zone detail modal ─────────────────────
+let _allZoneData = [];
+let _allReportData = null;
+
 function openZoneDetail(id) {
-  window.location = `/zone.html?id=${id}`;
+  const zone = _allZoneData.find(z => z.id === id);
+  if (!zone) return;
+
+  const rating  = zone.rating || {};
+  const rColor  = RATING_COLORS[rating.key] || { bg: '#555', text: '#fff' };
+  const hdrColor = ZONE_COLORS[zone.id] || '#2a4a6b';
+
+  // Header
+  document.getElementById('modalTop').style.background = hdrColor;
+  document.getElementById('modalName').textContent = zone.name;
+  document.getElementById('modalSub').textContent  = zone.subtitle;
+  document.getElementById('modalRatingBadge').textContent = `${rating.emoji || '○'} ${rating.label || '—'}`;
+  document.getElementById('modalRatingBadge').style.background = rColor.bg;
+  document.getElementById('modalRatingTagline').textContent = rating.tagline || '';
+
+  // Body
+  const reports = zone.zoneReports || [];
+  const reportHtml = reports.length
+    ? reports.slice(0, 3).map(r => `
+      <div class="modal-report">
+        <div class="modal-report-source">${r.source}${r.date ? ` · ${r.date}` : ''}</div>
+        <div class="modal-report-text">${r.text.slice(0, 400)}${r.text.length > 400 ? '…' : ''}</div>
+      </div>`).join('')
+    : `<div class="modal-report"><div class="modal-report-text" style="color:#aaa;font-style:italic">No recent reports for this zone. Check back after the weekly DNR report drops.</div></div>`;
+
+  const speciesHtml = (zone.species || []).map(s =>
+    `<span class="modal-species-tag">${s}</span>`
+  ).join('');
+
+  const spotsHtml = (zone.hotSpots || []).map(s =>
+    `<span class="modal-spot">${s}</span>`
+  ).join('');
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="modal-section">
+      <div class="modal-section-label">Target Species</div>
+      <div class="modal-species">${speciesHtml}</div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-label">About This Zone</div>
+      <div class="modal-desc">${zone.description} Typical depths: ${zone.typicalDepths}.</div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-label">Hot Spots</div>
+      <div class="modal-hotspots">${spotsHtml}</div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-label">Launch Ramps</div>
+      <div class="modal-launches">${(zone.launches || []).join(' · ')}</div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-label">Latest Reports</div>
+      ${reportHtml}
+    </div>
+  `;
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+// Close on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 // ── Main render ───────────────────────────
 async function loadApp() {
@@ -701,6 +870,10 @@ async function loadApp() {
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const data = await resp.json();
     if (!data.success) throw new Error(data.error || 'API error');
+
+    // Store for modal access
+    _allZoneData    = data.zones || [];
+    _allReportData  = data.reports;
 
     const html = [
       buildWindHero(data.wind),
