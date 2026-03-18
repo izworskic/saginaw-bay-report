@@ -16,6 +16,59 @@
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "Dataset",
+      "@id": "https://saginaw-bay-report.vercel.app/#dataset",
+      "name": "Saginaw Bay Fishing Conditions — Live Wind, Water, and Zone Report",
+      "description": "Daily live fishing conditions for Saginaw Bay, Michigan. Data includes NDBC wind buoy readings (SBLM4), USGS Saginaw River flow, turbidity, dissolved oxygen, and water temperature; NOAA Lake Huron water level; NWS weather forecasts; and Michigan DNR weekly fishing reports synthesized into zone-by-zone conditions for Inner Bay, Lower Bay, and Eastern Bay.",
+      "url": "https://saginaw-bay-report.vercel.app/",
+      "creator": {
+        "@type": "Person",
+        "name": "Chris Izworski",
+        "url": "https://chrisizworski.com",
+        "address": { "@type": "PostalAddress", "addressLocality": "Bay City", "addressRegion": "MI" },
+        "sameAs": ["https://freighterviewfarms.com", "https://chrisizworski.com/saginaw-bay-fishing-conditions/"]
+      },
+      "spatialCoverage": {
+        "@type": "Place",
+        "name": "Saginaw Bay, Lake Huron, Michigan",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "43.810",
+          "longitude": "-83.720",
+          "description": "Saginaw Bay, an embayment of Lake Huron in the Great Lakes basin, Bay City Michigan"
+        }
+      },
+      "temporalCoverage": "2026/..",
+      "updateFrequency": "Wind data updated every 10 minutes via NDBC; USGS river data every 15 minutes; NWS weather updated 6-hourly; DNR fishing reports weekly",
+      "variableMeasured": [
+        { "@type": "PropertyValue", "name": "Wind Speed", "unitCode": "MPH", "description": "Surface wind speed from NDBC SBLM4 buoy at Saginaw Bay Light #1" },
+        { "@type": "PropertyValue", "name": "Wind Direction", "unitCode": "DEG", "description": "Wind direction in degrees from NDBC SBLM4" },
+        { "@type": "PropertyValue", "name": "Wind Gusts", "unitCode": "MPH", "description": "Peak gust speed from NDBC SBLM4" },
+        { "@type": "PropertyValue", "name": "River Turbidity", "unitCode": "FNU", "description": "Saginaw River turbidity at Holland Avenue gauge (USGS 04157005) — indicator of bay water clarity" },
+        { "@type": "PropertyValue", "name": "River Flow", "unitCode": "CFS", "description": "Saginaw River discharge at Holland Avenue, Saginaw MI" },
+        { "@type": "PropertyValue", "name": "River Water Temperature", "unitCode": "FAH", "description": "Saginaw River temperature — proxy for inner bay conditions" },
+        { "@type": "PropertyValue", "name": "Dissolved Oxygen", "unitCode": "mg/L", "description": "Saginaw River dissolved oxygen" },
+        { "@type": "PropertyValue", "name": "Lake Huron Water Level", "unitCode": "FT", "description": "Lake Huron water level in feet IGLD from NOAA Harbor Beach station" },
+        { "@type": "PropertyValue", "name": "Zone Conditions Rating", "description": "Fishing conditions rating for Inner Bay, Lower Bay, and Eastern Bay: Flat Calm / Good Chop / Moderate / Rough / Dangerous / Poor Clarity" }
+      ],
+      "measurementTechnique": "NDBC National Data Buoy Center real-time text feed; USGS NWIS instantaneous values API; NOAA CO-OPS Tides and Currents API; NWS api.weather.gov gridded forecast API; Michigan DNR weekly fishing report via licensed republishers",
+      "distribution": [
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/json",
+          "contentUrl": "https://saginaw-bay-report.vercel.app/api/generate",
+          "description": "JSON API returning live conditions for all three bay zones"
+        },
+        {
+          "@type": "DataDownload",
+          "encodingFormat": "application/json",
+          "contentUrl": "https://saginaw-bay-report.vercel.app/api/brief",
+          "description": "AI-generated daily conditions brief for bay anglers"
+        }
+      ],
+      "keywords": ["Saginaw Bay fishing", "walleye fishing Michigan", "Saginaw Bay walleye", "perch fishing Saginaw Bay", "bay conditions", "NOAA buoy", "Michigan fishing report", "Bay City Michigan fishing", "Thomas Road walleye", "Wildfowl Bay perch"]
+    },
+    {
       "@type": "Person",
       "@id": "https://chrisizworski.com/#person",
       "name": "Chris Izworski",
@@ -26,10 +79,9 @@
     },
     {
       "@type": "WebSite",
-      "@id": "https://saginaw-bay-report.vercel.app/",
-      "url": "https://saginaw-bay-report.vercel.app/",
+      "@id": "https://saginaw-bay-report.vercel.app/#website",
       "name": "Saginaw Bay Fishing Report",
-      "description": "Live Saginaw Bay fishing conditions — walleye, perch, pike",
+      "url": "https://saginaw-bay-report.vercel.app/",
       "author": { "@id": "https://chrisizworski.com/#person" }
     }
   ]
