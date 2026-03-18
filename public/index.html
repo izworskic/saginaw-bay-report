@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saginaw Bay Fishing Report — Live Walleye, Perch, Pike Conditions</title>
+<meta name="description" content="Live Saginaw Bay fishing conditions. Wind, water clarity, and zone-by-zone walleye and perch reports updated daily. Bay City, Thomas Road, Wildfowl Bay.">
+<link rel="canonical" href="https://saginaw-bay-report.vercel.app/">
+<style>
+/* ── Reset ─────────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box}
+
+/* ── Palette ───────────────────────────── */
+:root {
+  --bay:      #2a4a6b;    /* deep Lake Huron blue-gray */
+  --bay-dark: #1a2f45;    /* night water */
+  --bay-mid:  #3a6a9a;    /* open water */
+  --amber:    #c8860a;    /* walleye flank / dawn */
+  --amber-lt: #e8a830;    /* warm accent */
+  --fog:      #f4f2ee;    /* fog white bg */
+  --fog-dk:   #ece9e3;    /* card bg */
+  --steel:    #5c7a96;    /* secondary text */
+  --slate:    #1e2d3d;    /* primary text */
+  --border:   #d0cfc8;    /* subtle borders */
+}
+
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: var(--fog);
+  color: var(--slate);
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+a { color: var(--bay); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Header ────────────────────────────── */
+.site-header {
+  background: var(--bay-dark);
+  color: #fff;
+  padding: 0 20px;
+  border-bottom: 3px solid var(--amber);
+}
+.header-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+}
+.site-title {
+  font-size: 22px;
+  font-weight: normal;
+  letter-spacing: 0.5px;
+  color: #fff;
+}
+.site-title small {
+  display: block;
+  font-size: 12px;
+  color: var(--steel);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-family: sans-serif;
+  margin-top: 2px;
+}
+.header-nav a {
+  color: #aac4d8;
+  font-size: 13px;
+  font-family: sans-serif;
+  margin-left: 18px;
+}
+.header-nav a:hover { color: #fff; }
+
+/* ── Wind Hero ─────────────────────────── */
+.wind-hero {
+  background: linear-gradient(135deg, var(--bay-dark) 0%, var(--bay) 100%);
+  color: #fff;
+  padding: 28px 20px;
+  border-bottom: 1px solid var(--bay-mid);
+}
+.wind-hero-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 24px;
+  align-items: center;
+}
+.compass-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.compass {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.compass-arrow {
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 36px solid var(--amber-lt);
+  transform-origin: center 24px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+  transition: transform 0.8s ease;
+}
+.compass-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+  font-family: sans-serif;
+  letter-spacing: 0.5px;
+}
+.wind-main {
+  min-width: 0;
+}
+.wind-speed {
+  font-size: 44px;
+  font-weight: bold;
+  font-family: sans-serif;
+  line-height: 1;
+  color: #fff;
+}
+.wind-speed small {
+  font-size: 16px;
+  font-weight: normal;
+  color: rgba(255,255,255,0.6);
+}
+.wind-detail {
+  font-size: 14px;
+  color: rgba(255,255,255,0.75);
+  margin-top: 4px;
+  font-family: sans-serif;
+}
+.wind-advice {
+  font-size: 14px;
+  color: rgba(255,255,255,0.85);
+  margin-top: 8px;
+  font-style: italic;
+  max-width: 460px;
+}
+.wind-status {
+  text-align: right;
+  min-width: 160px;
+}
+.wind-rating-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: sans-serif;
+  letter-spacing: 0.3px;
+  margin-bottom: 8px;
+}
+.wind-station {
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  font-family: sans-serif;
+  line-height: 1.5;
+}
+.wind-offline {
+  text-align: center;
+  color: rgba(255,255,255,0.5);
+  font-style: italic;
+  font-size: 14px;
+  padding: 20px;
+  grid-column: 1/-1;
+}
+
+/* ── Water Stats Bar ────────────────────── */
+.water-bar {
+  background: var(--bay);
+  border-bottom: 1px solid var(--bay-dark);
+}
+.water-bar-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+}
+.water-stat {
+  flex: 1;
+  min-width: 130px;
+  padding: 14px 18px;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
+}
+.water-stat:last-child { border-right: none; }
+.water-stat-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: rgba(255,255,255,0.5);
+  font-family: sans-serif;
+  margin-bottom: 3px;
+}
+.water-stat-value {
+  font-size: 18px;
+  font-family: sans-serif;
+  color: #fff;
+}
+.water-stat-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.55);
+  margin-top: 2px;
+  font-family: sans-serif;
+}
+.water-stat-warn { color: #ffcc44; }
+.water-stat-bad  { color: #ff8888; }
+
+/* ── AI Brief ──────────────────────────── */
+.brief-section {
+  max-width: 1000px;
+  margin: 28px auto 0;
+  padding: 0 20px;
+}
+.brief-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--amber);
+  border-radius: 4px;
+  padding: 20px 22px;
+}
+.brief-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--steel);
+  font-family: sans-serif;
+  margin-bottom: 10px;
+}
+.brief-text {
+  font-size: 15px;
+  color: var(--slate);
+  line-height: 1.8;
+}
+.brief-text p { margin-bottom: 10px; }
+.brief-text p:last-child { margin-bottom: 0; }
+
+/* ── Zone Grid ─────────────────────────── */
+.zones-section {
+  max-width: 1000px;
+  margin: 28px auto 0;
+  padding: 0 20px;
+}
+.zones-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.zone-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.zone-card:hover {
+  box-shadow: 0 4px 16px rgba(42,74,107,0.12);
+  transform: translateY(-1px);
+}
+.zone-header {
+  padding: 14px 16px 12px;
+  color: #fff;
+  position: relative;
+}
+.zone-name {
+  font-size: 17px;
+  font-weight: normal;
+  margin-bottom: 2px;
+}
+.zone-subtitle {
+  font-size: 11px;
+  opacity: 0.7;
+  font-family: sans-serif;
+  letter-spacing: 0.3px;
+}
+.zone-rating {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.zone-rating-badge {
+  font-size: 13px;
+  font-weight: bold;
+  font-family: sans-serif;
+  background: rgba(255,255,255,0.18);
+  padding: 3px 10px;
+  border-radius: 3px;
+}
+.zone-rating-tagline {
+  font-size: 12px;
+  opacity: 0.75;
+  font-style: italic;
+}
+.zone-body {
+  padding: 14px 16px;
+}
+.zone-detail { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 10px; }
+.zone-spots {
+  font-size: 12px;
+  color: var(--steel);
+  font-family: sans-serif;
+  border-top: 1px solid var(--fog-dk);
+  padding-top: 10px;
+  margin-top: 6px;
+}
+.zone-spots strong { color: var(--slate); }
+.zone-report {
+  background: var(--fog);
+  border-radius: 3px;
+  padding: 10px 12px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #444;
+  line-height: 1.6;
+  font-family: sans-serif;
+}
+.zone-report-source {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--steel);
+  margin-bottom: 4px;
+}
+
+/* ── Weather Row ────────────────────────── */
+.weather-section {
+  max-width: 1000px;
+  margin: 28px auto 0;
+  padding: 0 20px;
+}
+.section-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--steel);
+  font-family: sans-serif;
+  margin-bottom: 12px;
+}
+.weather-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+.weather-day {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px 8px;
+  text-align: center;
+  font-family: sans-serif;
+}
+.weather-day.good { border-top: 3px solid #2e7d32; }
+.weather-day.ok   { border-top: 3px solid var(--amber); }
+.weather-day.bad  { border-top: 3px solid #cc5500; }
+.weather-day-name { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--steel); margin-bottom: 4px; }
+.weather-day-temp { font-size: 16px; color: var(--slate); }
+.weather-day-low  { font-size: 11px; color: #aaa; }
+.weather-day-wind { font-size: 11px; color: var(--bay); margin-top: 4px; }
+.weather-day-rain { font-size: 11px; color: #777; }
+
+/* ── Reports ────────────────────────────── */
+.reports-section {
+  max-width: 1000px;
+  margin: 28px auto 0;
+  padding: 0 20px;
+}
+.report-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.report-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 14px 16px;
+}
+.report-card-source {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--amber);
+  font-family: sans-serif;
+  margin-bottom: 4px;
+}
+.report-card-date { font-size: 11px; color: #aaa; font-family: sans-serif; margin-bottom: 8px; }
+.report-card-text { font-size: 13px; color: #444; line-height: 1.65; font-family: sans-serif; }
+.report-card-link { font-size: 12px; color: var(--bay); font-family: sans-serif; margin-top: 8px; display: block; }
+
+/* ── Loading / Error ────────────────────── */
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--steel);
+  font-style: italic;
+  font-family: sans-serif;
+}
+.spinner {
+  display: inline-block;
+  width: 32px; height: 32px;
+  border: 3px solid rgba(42,74,107,0.2);
+  border-top-color: var(--bay);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 14px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Footer ────────────────────────────── */
+.site-footer {
+  max-width: 1000px;
+  margin: 40px auto 0;
+  padding: 20px 20px 40px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: #aaa;
+  font-family: sans-serif;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.site-footer a { color: #888; }
+#lastUpdated { font-size: 11px; color: #bbb; }
+
+/* ── Responsive ─────────────────────────── */
+@media (max-width: 760px) {
+  .wind-hero-inner { grid-template-columns: auto 1fr; }
+  .wind-status { display: none; }
+  .zones-grid { grid-template-columns: 1fr; }
+  .weather-grid { grid-template-columns: repeat(4, 1fr); }
+  .report-cards { grid-template-columns: 1fr; }
+  .wind-speed { font-size: 34px; }
+  .water-bar-inner { gap: 0; }
+}
+@media (max-width: 480px) {
+  .weather-grid { grid-template-columns: repeat(3, 1fr); }
+  .water-stat { min-width: 100px; padding: 10px 12px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="site-title">
+      Saginaw Bay Report
+      <small>Walleye · Perch · Pike · Live Conditions</small>
+    </div>
+    <nav class="header-nav">
+      <a href="https://chrisizworski.com/michigan-trout-streams/" target="_blank" rel="noopener">Trout Rivers</a>
+      <a href="https://freighterviewfarms.com" target="_blank" rel="noopener">Freighter View Farms</a>
+    </nav>
+  </div>
+</header>
+
+<div id="appRoot">
+  <div class="loading">
+    <div><div class="spinner"></div></div>
+    Loading live bay conditions...
+  </div>
+</div>
+
+<footer class="site-footer" id="siteFooter" style="display:none">
+  <span>Bay City, Michigan &nbsp;·&nbsp; Wind: NDBC SBLM4 &nbsp;·&nbsp; Water: USGS &nbsp;·&nbsp; Weather: NWS</span>
+  <span id="lastUpdated"></span>
+</footer>
+
+<script>
+// ── Rating colors ─────────────────────────
+const RATING_COLORS = {
+  FLAT_CALM:  { bg: '#1a7a3a', text: '#fff' },
+  GOOD_CHOP:  { bg: '#2e7d32', text: '#fff' },
+  MODERATE:   { bg: '#b08000', text: '#fff' },
+  ROUGH:      { bg: '#cc5500', text: '#fff' },
+  DANGEROUS:  { bg: '#b71c1c', text: '#fff' },
+  POOR_WATER: { bg: '#795548', text: '#fff' },
+};
+
+// Zone header colors
+const ZONE_COLORS = {
+  inner:   '#2a5a7a',
+  lower:   '#1e3d5c',
+  eastern: '#2d4a3e',
+};
+
+// ── Compass rose ──────────────────────────
+function buildCompass(wdir) {
+  const angle = wdir !== null && wdir !== undefined ? wdir : 0;
+  // Wind direction = where FROM, arrow points downwind (where TO) = +180
+  const arrowDeg = (angle + 180) % 360;
+  return `<div class="compass">
+    <div class="compass-arrow" style="transform:rotate(${arrowDeg}deg)"></div>
+  </div>`;
+}
+
+// ── Wind hero ─────────────────────────────
+function buildWindHero(wind) {
+  if (!wind || !wind.online) {
+    return `<div class="wind-hero">
+      <div class="wind-hero-inner">
+        <div class="wind-offline">Wind buoy offline — seasonal or maintenance. Check back after ice-out.</div>
+      </div>
+    </div>`;
+  }
+  const w      = wind.wind;
+  const interp = w.interpretation || {};
+  const rColor = RATING_COLORS[interp.rating] || { bg: '#555', text: '#fff' };
+
+  return `<div class="wind-hero">
+    <div class="wind-hero-inner">
+      <div class="compass-wrap">
+        ${buildCompass(w.wdir)}
+        <div class="compass-label">${w.dirLabel || '—'}</div>
+      </div>
+      <div class="wind-main">
+        <div class="wind-speed">${w.wspd_mph !== null ? w.wspd_mph : '—'}<small> mph</small></div>
+        <div class="wind-detail">
+          Gusts ${w.gst_mph !== null ? w.gst_mph + ' mph' : '—'} &nbsp;·&nbsp;
+          ${w.dirLabel ? w.dirLabel + ' wind' : ''}
+          ${w.atmp_f !== null ? `&nbsp;·&nbsp; Air ${w.atmp_f}°F` : ''}
+        </div>
+        ${interp.fishingNote ? `<div class="wind-advice">${interp.fishingNote}</div>` : ''}
+        ${interp.dirNote ? `<div class="wind-advice" style="margin-top:4px;opacity:.75">${interp.dirNote}</div>` : ''}
+      </div>
+      <div class="wind-status">
+        <div class="wind-rating-badge" style="background:${rColor.bg};color:${rColor.text}">
+          ${interp.label || '—'}
+        </div>
+        <div class="wind-station">
+          NDBC ${wind.buoyId}<br>
+          ${wind.buoy?.location || ''}<br>
+          ${w.dateTime ? new Date(w.dateTime).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZoneName:'short'}) : ''}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── Water stats bar ───────────────────────
+function buildWaterBar(water, lakeLevel) {
+  const r = water?.river?.['04157005'] || {};
+  const flow      = r.flow !== null && r.flow !== undefined ? r.flow.toLocaleString() + ' cfs' : '—';
+  const turbidity = r.turbidity_fnu !== null && r.turbidity_fnu !== undefined ? r.turbidity_fnu + ' FNU' : '—';
+  const turbLabel = r.turbidityInterp?.label || '';
+  const turbBay   = r.turbidityInterp?.bayImpact || 'ok';
+  const riverTemp = r.temp_f !== null && r.temp_f !== undefined ? r.temp_f + '°F' : '—';
+  const doMgl     = r.do_mgl !== null && r.do_mgl !== undefined ? r.do_mgl + ' mg/L' : '—';
+  const lakeStr   = lakeLevel ? lakeLevel.levelFt.toFixed(2) + ' ft' : '—';
+
+  const turbClass = turbBay === 'bad' || turbBay === 'terrible' ? 'water-stat-bad'
+                  : turbBay === 'poor' ? 'water-stat-warn' : '';
+
+  return `<div class="water-bar">
+    <div class="water-bar-inner">
+      <div class="water-stat">
+        <div class="water-stat-label">Saginaw River Flow</div>
+        <div class="water-stat-value">${flow}</div>
+        <div class="water-stat-sub">${r.flowInterp?.label || ''}</div>
+      </div>
+      <div class="water-stat">
+        <div class="water-stat-label">Turbidity</div>
+        <div class="water-stat-value ${turbClass}">${turbidity}</div>
+        <div class="water-stat-sub">${turbLabel}</div>
+      </div>
+      <div class="water-stat">
+        <div class="water-stat-label">River Temp</div>
+        <div class="water-stat-value">${riverTemp}</div>
+        <div class="water-stat-sub">Inner bay proxy</div>
+      </div>
+      <div class="water-stat">
+        <div class="water-stat-label">Dissolved O₂</div>
+        <div class="water-stat-value">${doMgl}</div>
+        <div class="water-stat-sub">${r.doInterp?.label || ''}</div>
+      </div>
+      <div class="water-stat">
+        <div class="water-stat-label">Lake Huron Level</div>
+        <div class="water-stat-value">${lakeStr}</div>
+        <div class="water-stat-sub">${lakeLevel?.note?.slice(0,40) || ''}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── AI Brief ──────────────────────────────
+function buildBrief(brief, season) {
+  if (!brief && !season) return '';
+  const paragraphs = brief
+    ? brief.split(/\n+/).filter(Boolean).map(p => `<p>${p}</p>`).join('')
+    : '';
+  return `<div class="brief-section">
+    <div class="brief-card">
+      <div class="brief-label">🎣 Conditions Brief — ${season?.label || 'Today'}</div>
+      <div class="brief-text">${paragraphs || '<p>Loading conditions brief...</p>'}</div>
+    </div>
+  </div>`;
+}
+
+// ── Zone cards ────────────────────────────
+function buildZoneCard(zone) {
+  const rating  = zone.rating || {};
+  const rColor  = RATING_COLORS[rating.key] || { bg: '#555', text: '#fff' };
+  const hdrColor = ZONE_COLORS[zone.id] || '#2a4a6b';
+  const reports = zone.zoneReports || [];
+
+  const reportHtml = reports.slice(0, 1).map(r =>
+    `<div class="zone-report">
+      <div class="zone-report-source">${r.source}</div>
+      ${r.text.slice(0, 220)}${r.text.length > 220 ? '…' : ''}
+    </div>`
+  ).join('');
+
+  return `<div class="zone-card" onclick="openZoneDetail('${zone.id}')">
+    <div class="zone-header" style="background:${hdrColor}">
+      <div class="zone-name">${zone.name}</div>
+      <div class="zone-subtitle">${zone.subtitle}</div>
+      <div class="zone-rating">
+        <span class="zone-rating-badge">${rating.emoji || '○'} ${rating.label || '—'}</span>
+        <span class="zone-rating-tagline">${rating.tagline || ''}</span>
+      </div>
+    </div>
+    <div class="zone-body">
+      <div class="zone-detail">${zone.description}</div>
+      <div class="zone-spots">
+        <strong>Hot spots:</strong> ${zone.hotSpots?.slice(0,3).join(', ') || '—'}<br>
+        <strong>Depths:</strong> ${zone.typicalDepths} &nbsp;·&nbsp;
+        <strong>Species:</strong> ${zone.species?.join(', ') || '—'}
+      </div>
+      ${reportHtml}
+    </div>
+  </div>`;
+}
+
+// ── Weather strip ─────────────────────────
+function buildWeather(weather) {
+  if (!weather?.week?.length) return '';
+  const days = weather.week.slice(0, 7).map(d => {
+    const cls = d.goodForFishing ? 'good' : d.maxWind > 18 ? 'bad' : 'ok';
+    return `<div class="weather-day ${cls}">
+      <div class="weather-day-name">${d.name.replace(' Night','').slice(0,3)}</div>
+      <div class="weather-day-temp">${d.tempF}°</div>
+      ${d.tempLow !== undefined && d.tempLow !== null ? `<div class="weather-day-low">↓${d.tempLow}°</div>` : ''}
+      <div class="weather-day-wind">${d.maxWind} mph</div>
+      ${d.rain > 10 ? `<div class="weather-day-rain">💧${d.rain}%</div>` : ''}
+    </div>`;
+  }).join('');
+
+  const best = weather.bestWindow;
+  const bestNote = best?.worthGoing
+    ? `<div style="font-size:12px;color:#2e7d32;margin-top:10px;font-family:sans-serif">Best window: <strong>${best.name}</strong> — ${best.tempF}°F, max ${best.maxWind} mph wind, ${best.forecast}</div>`
+    : '';
+
+  return `<div class="weather-section">
+    <div class="section-title">🌤 Bay City Weather Forecast</div>
+    <div class="weather-grid">${days}</div>
+    ${bestNote}
+  </div>`;
+}
+
+// ── Report cards ──────────────────────────
+function buildReports(reports) {
+  if (!reports?.items?.length) return '';
+  const cards = reports.items.map(r =>
+    `<div class="report-card">
+      <div class="report-card-source">${r.source}</div>
+      ${r.date ? `<div class="report-card-date">${r.date}</div>` : ''}
+      <div class="report-card-text">${r.content.slice(0, 350)}${r.content.length > 350 ? '…' : ''}</div>
+      ${r.url ? `<a class="report-card-link" href="${r.url}" target="_blank" rel="noopener">Read full report →</a>` : ''}
+    </div>`
+  ).join('');
+  return `<div class="reports-section">
+    <div class="section-title">📋 Weekly Fishing Reports</div>
+    <div class="report-cards">${cards}</div>
+  </div>`;
+}
+
+// ── Zone detail (click through) ───────────
+function openZoneDetail(id) {
+  window.location = `/zone.html?id=${id}`;
+}
+
+// ── Main render ───────────────────────────
+async function loadApp() {
+  try {
+    const resp = await fetch('/api/generate');
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    if (!data.success) throw new Error(data.error || 'API error');
+
+    const html = [
+      buildWindHero(data.wind),
+      buildWaterBar(data.water, data.water?.lakeLevel),
+      buildBrief(data.brief, data.season),
+      `<div class="zones-section">
+        <div class="section-title">Bay Zones — Current Conditions</div>
+        <div class="zones-grid">
+          ${(data.zones || []).map(buildZoneCard).join('')}
+        </div>
+      </div>`,
+      buildWeather(data.weather),
+      buildReports(data.reports),
+      `<div style="height:40px"></div>`,
+    ].join('\n');
+
+    document.getElementById('appRoot').innerHTML = html;
+    document.getElementById('siteFooter').style.display = 'flex';
+
+    if (data.generatedAt) {
+      document.getElementById('lastUpdated').textContent =
+        'Updated ' + new Date(data.generatedAt).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZoneName:'short'});
+    }
+  } catch(e) {
+    document.getElementById('appRoot').innerHTML = `
+      <div class="loading">Failed to load bay conditions.<br><small>${e.message}</small></div>`;
+  }
+}
+
+loadApp();
+</script>
+</body>
+</html>
