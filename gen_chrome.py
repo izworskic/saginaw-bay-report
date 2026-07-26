@@ -107,6 +107,7 @@ NAV = [
     ("/eastern-bay.html", "Eastern bay"),
     ("/saginaw-river.html", "Saginaw River"),
     ("/launches-and-access.html", "Launches"),
+    ("/map.html", "Map"),
 ]
 
 
