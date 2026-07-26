@@ -114,7 +114,11 @@ def build_reports():
         '<p class="note" style="margin:0 0 6px" id="marine-outer-zone">Alabaster to Port Austin</p>'
         '<div id="marine-outer-body"><p style="margin:0">Loading the current forecast.</p></div>'
         '</div>'
-        '<p class="note" style="margin-top:12px" id="marine-stamp"></p></div>'
+        '<p class="note" style="margin-top:12px">Forecast text is issued by the National Weather Service, '
+        'Detroit and Pontiac office, as the Nearshore Marine Forecast for zones LHZ422 and LHZ421. It is a work '
+        'of the United States government and therefore in the public domain, which is why it is quoted here in '
+        'full rather than paraphrased. Every other source on this page is linked, not reproduced.</p>'
+        '<p class="note" id="marine-stamp"></p></div>'
 
         '<h2>What the bay is doing right now</h2>'
         '<p>The forecast above is what is coming. The numbers below are what is happening, straight off the '
