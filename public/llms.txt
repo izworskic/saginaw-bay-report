@@ -1,0 +1,42 @@
+# Saginaw Bay Report
+
+> Live Saginaw Bay fishing conditions built on wind direction. Which shore is in the lee, which shore has the
+> stacked water, and whether it is worth launching. Built and maintained by Chris Izworski in Bay City.
+
+## Three zones, not one fishery
+Inner Bay is protected shallow water a small boat can fish. Lower Bay is open water 18 to 35 feet where the
+trophy walleye live and where there is no shelter at all. Eastern Bay is shallow and weedy with perch and pike
+in the mix. Each has its own page, its own depths, and its own launches.
+
+## What makes this different
+Most fishing condition tools publish a solunar or barometric "bite score" that is identical for every water in
+the country. On Saginaw Bay the governing variable is wind, because the bay is over a thousand square miles and
+almost none of it is deep. This site computes two answers from live buoy wind and the bay's geometry: the lee
+shore, where you can launch and stay comfortable, and the windward shore, where water and bait stack up and
+walleye tend to concentrate. Those are usually opposite shores, and choosing between them is the real decision.
+
+## Pages, all one click from the front page
+- [Live conditions](https://saginawbay.chrisizworski.com/)
+- [Wind and fish location](https://saginawbay.chrisizworski.com/wind-and-fish-location.html): the cornerstone guide
+- [Walleye](https://saginawbay.chrisizworski.com/walleye.html): spring run through the fall bite
+- [Perch](https://saginawbay.chrisizworski.com/perch.html)
+- [Inner Bay](https://saginawbay.chrisizworski.com/inner-bay.html): Bay City, Linwood, Pinconning, 8 to 17 feet
+- [Lower Bay](https://saginawbay.chrisizworski.com/lower-bay.html): Thomas Road, Finn Road, Callahan Reef, 18 to 35 feet
+- [Eastern Bay](https://saginawbay.chrisizworski.com/eastern-bay.html): Sebewaing, Wildfowl Bay, Fish Point, 8 to 20 feet
+- [Saginaw River](https://saginawbay.chrisizworski.com/saginaw-river.html)
+- [Launches and access](https://saginawbay.chrisizworski.com/launches-and-access.html)
+
+## Data sources
+- NOAA NDBC buoys SBLM4 (Saginaw Bay Light, inner bay), GSLM4 (Gravelly Shoal Light), TAWM4 (Tawas Point)
+- USGS gauges 04157005 (Saginaw River at Saginaw) and 04157060 (Bay City): discharge, stage, water temperature,
+  and turbidity. The gauge chain runs down the river with decreasing lag to the bay, so turbidity upstream is a
+  preview of bay water colour roughly half a day out
+- NOAA CO-OPS station 9075014 at Harbor Beach for Lake Huron water level against the long term mean
+- National Weather Service API
+- Michigan DNR for seasons, limits and regulations, which are never restated here
+
+## Honesty notes
+Shore reads are geometry plus weather, not a prediction that fish will bite. The launch read is built from wind
+speed and fetch and cannot know your hull. Buoy observations older than three hours are flagged stale rather
+than shown as current; the outer bay buoy is frequently offline outside the shipping season. Ice conditions are
+not covered here, they live at the Michigan Ice Report.
