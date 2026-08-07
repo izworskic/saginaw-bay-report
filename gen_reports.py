@@ -2,7 +2,7 @@ import pathlib, sys
 sys.path.insert(0, "/home/claude/sbr")
 from gen_chrome import head, header, FOOTER, breadcrumb, PERSON_NODE, PERSON_ID, SITE
 
-OUT = pathlib.Path("/home/claude/sbr/public")
+OUT = pathlib.Path(__file__).resolve().parent / "public"
 
 # Sources are linked and attributed, never reproduced. The one exception is the
 # National Weather Service marine forecast, which is a US federal government

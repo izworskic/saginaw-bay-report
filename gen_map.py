@@ -1,8 +1,9 @@
+import pathlib
 import json, pathlib, sys
 sys.path.insert(0, "/home/claude/sbr")
 from gen_chrome import head, header, FOOTER, breadcrumb, PERSON_NODE, PERSON_ID, SITE
 
-OUT = pathlib.Path("/home/claude/sbr/public")
+OUT = pathlib.Path(__file__).resolve().parent / "public"
 
 # Coordinates resolved from a places lookup rather than estimated. Each of these
 # is a real, named public access point.

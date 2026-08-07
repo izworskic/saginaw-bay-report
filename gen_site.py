@@ -1,8 +1,9 @@
+import pathlib
 import json, pathlib, sys
 sys.path.insert(0, "/home/claude/sbr")
 from gen_chrome import head, header, FOOTER, breadcrumb, PERSON_NODE, PERSON_ID, SITE
 
-OUT = pathlib.Path("/home/claude/sbr/public")
+OUT = pathlib.Path(__file__).resolve().parent / "public"
 OUT.mkdir(parents=True, exist_ok=True)
 
 
@@ -131,7 +132,7 @@ def build_index():
         '<li><strong>It does not replace the DNR.</strong> Seasons, size limits, possession limits, and any '
         'emergency orders come from the state and change. Check before you keep anything.</li>'
         '<li><strong>It does not cover ice.</strong> Winter conditions live on the '
-        '<a href="https://ice.chrisizworski.com/regions/saginaw-bay.html">Michigan Ice Report</a>, which tracks '
+        '<a href="https://chrisizworski.com/michigan-ice/regions/saginaw-bay.html">Michigan Ice Report</a>, which tracks '
         'accumulated cold instead of wind.</li>'
         '</ul>'
 
@@ -311,7 +312,7 @@ def build_walleye():
         'northeast winds that make the inner bay miserable start showing up regularly.</p>'
         '<p>Late in the fall the fish begin drifting back toward the river mouth and the deeper holes, which sets up '
         'the winter fishery. Once the bay locks up, conditions move over to the '
-        '<a href="https://ice.chrisizworski.com/regions/saginaw-bay.html">Michigan Ice Report</a>, which tracks '
+        '<a href="https://chrisizworski.com/michigan-ice/regions/saginaw-bay.html">Michigan Ice Report</a>, which tracks '
         'accumulated cold rather than wind.</p>'
 
         '<h2>Reading water color</h2>'
@@ -412,7 +413,7 @@ def build_perch():
 # ------------------------------------------------------------------ shores
 ZONES = [
     dict(
-        slug="inner-bay", name="Inner Bay", nav="/inner-bay.html",
+        slug="inner-bay", camera_place="the Kawkawlin, Bay City", camera="kawkawlin-bay-city", name="Inner Bay", nav="/inner-bay.html",
         subtitle="Bay City, Linwood, Pinconning",
         depths="8 to 17 feet",
         launches="Bay City State Park, Linwood, Pinconning",
@@ -439,7 +440,7 @@ ZONES = [
         ],
     ),
     dict(
-        slug="lower-bay", name="Lower Bay", nav="/lower-bay.html",
+        slug="lower-bay", camera_place="the Pine River, Standish", camera="pine-river-standish", name="Lower Bay", nav="/lower-bay.html",
         subtitle="Thomas Road, Finn Road, Callahan Reef",
         depths="18 to 35 feet",
         launches="Au Gres, Omer, Standish",
@@ -467,7 +468,7 @@ ZONES = [
         ],
     ),
     dict(
-        slug="eastern-bay", name="Eastern Bay", nav="/eastern-bay.html",
+        slug="eastern-bay", camera_place="the Sebewaing River", camera="sebewaing-river", name="Eastern Bay", nav="/eastern-bay.html",
         subtitle="Sebewaing, Wildfowl Bay, Fish Point",
         depths="8 to 20 feet",
         launches="Sebewaing, Bay Port, Unionville, Caseville",
@@ -498,6 +499,27 @@ ZONES = [
 ]
 
 
+
+# ---------------------------------------------------------------- cameras
+# USGS streamgage cameras, served through the shared camera API on chrisizworski.com so this
+# project does not carry a second copy of the registry and proxy. That API sets CORS *, and the
+# renderer degrades to a plain line of text if it is unreachable, so a hub outage cannot break
+# a zone page.
+#
+# What these are: a look at the water at a launch or a river mouth, updated hourly in daylight.
+# What they are NOT: a view of the open bay. The wind and fetch read above still decides whether
+# the bay is fishable. The camera answers the narrower question of what the water looks like where
+# you put in, which is the question the gauge numbers alone cannot answer.
+CAMERA_API = "https://chrisizworski.com/api/field-camera"
+
+def camera_block(cam_id, heading, intro):
+    return (
+        f'<h2>{heading}</h2>'
+        f'<p>{intro}</p>'
+        f'<div class="field-camera" data-field-camera="{cam_id}">'
+        '<p class="camera-out">Loading the camera.</p></div>'
+    )
+
 def build_zone(s):
     url = SITE + s["nav"]
     others = [x for x in ZONES if x["slug"] != s["slug"]]
@@ -523,6 +545,13 @@ def build_zone(s):
         f'<p class="note">{s["subtitle"]}. Typical depths {s["depths"]}. Launches at {s["launches"]}. '
         f'Named water: {s["spots"]}. In the lee when the wind is out of the {s["lee_when"]}.</p>'
         + live_block() +
+        (camera_block(
+            s["camera"],
+            f'Camera on the water at {s["camera_place"]}',
+            'A USGS camera looking at the water itself, updated through daylight hours. It shows you '
+            'colour, level and whether anything is moving, which the gauge numbers cannot. It looks at '
+            'the river and the launch, not at the open bay, so read it alongside the wind above rather '
+            'than instead of it.') if s.get("camera") else '') +
         '<h2>What this shore is like</h2>' + detail +
         '<h2>Local notes</h2>'
         f'<div class="grid two">{notes}</div>'
@@ -572,6 +601,13 @@ def build_river():
         '<p class="lede">The river is the bay\'s front door. It is where the walleye spawn, where the season starts, '
         'and where you go when the bay itself is unfishable.</p>'
         + live_block() +
+        camera_block(
+            "saginaw-river-holland",
+            "Camera on the river at Holland Avenue",
+            'This camera watches the same water as USGS gauge 04157005, the top of the gauge chain below. '
+            'The turbidity number tells you how stained the river is running; the picture tells you what that '
+            'number actually looks like, about half a day before that water reaches the bay.') +
+        
 
         '<h2>The system above the mouth</h2>'
         '<p>The Saginaw River is short but it drains an enormous watershed. The Tittabawassee, the Cass, the Flint, '

@@ -78,6 +78,13 @@ td.num{white-space:nowrap}
 .tile h3{margin:0 0 6px;font-size:16.5px}
 .tile p{margin:0;font-size:14px;color:#3f5148}
 .note{font-size:13px;color:#5d6b63;font-style:italic}
+.field-camera{margin:16px 0 22px}
+.field-camera .camera-shot{width:100%;height:auto;max-width:720px;border-radius:8px;display:block}
+.field-camera[data-state="stale"] .camera-shot{filter:saturate(.55)}
+.field-camera .camera-caption{margin:8px 0 2px;font-size:13px;color:#3d4a44}
+.field-camera .camera-credit{margin:0;font-size:12px;color:#7a877f}
+.field-camera .camera-credit a{color:inherit}
+.field-camera .camera-out{margin:0;font-size:13px;color:#5d6b63}
 .site-footer{margin-top:34px;padding-top:16px;border-top:1px solid #d3ddd4;font-size:12.5px;color:#5d6b63}
 .site-footer a{color:#1d6b4f}
 ul.tight li{margin-bottom:7px}
@@ -161,7 +168,7 @@ FOOTER = (
     'Seasons, limits, and regulations from the '
     '<a href="https://www.michigan.gov/dnr/things-to-do/fishing">Michigan DNR</a>, which is always the authority. '
     'Ice conditions are tracked separately at '
-    '<a href="https://ice.chrisizworski.com">the Michigan Ice Report</a>. '
+    '<a href="https://chrisizworski.com/michigan-ice/">the Michigan Ice Report</a>. '
     'Part of a Michigan outdoor network that includes the '
     '<a href="https://michigantroutreport.com">Michigan Trout Report</a>, '
     '<a href="https://greatlakeslevels.org">Great Lakes Levels</a>, and '
@@ -170,7 +177,7 @@ FOOTER = (
     'Wind reads on this site are geometry and weather, not a prediction that fish will bite. '
     'Nothing here is a substitute for your own judgment about whether it is safe to launch.'
     '</footer>'
-    '</div></div><script src="/bay.js"></script></body></html>'
+    '</div></div><script src="/bay.js"></script><script src="/field-camera.js"></script></body></html>'
 )
 
 
