@@ -1,5 +1,5 @@
 {
-  "buildCommand": "python3 build_map_search.py",
+  "buildCommand": "node build-map-search.mjs",
   "outputDirectory": "public",
   "headers": [
     { "source": "/bay.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }] }
