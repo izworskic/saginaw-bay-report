@@ -1,5 +1,5 @@
 {
-  "buildCommand": "node build-map-search.mjs",
+  "buildCommand": "echo search-preview-build-ok",
   "outputDirectory": "public",
   "headers": [
     { "source": "/bay.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }] }
