@@ -1,0 +1,45 @@
+{
+  "version": "1.0.0",
+  "updated": "2026-08-23",
+  "timezone": "America/Detroit",
+  "surface": "https://saginawbay.chrisizworski.com/map.html",
+  "objective": "Move the existing Saginaw Bay map from the page-one threshold into a durable top-10 result while lifting qualified CTR through clearer fishing-map intent.",
+  "source": {
+    "title": "chrisizworski.com-Performance-on-Search-2026-08-22",
+    "spreadsheetId": "1dm2AC6FN4lU9P0viRs3mhVtg098AuvwEdNbKw-PsEVw",
+    "exportedThrough": "2026-08-20",
+    "windowDays": 7,
+    "note": "Leading signal only. Final decision requires a complete comparable 28-day window after production release."
+  },
+  "baseline": {
+    "impressions": 90,
+    "clicks": 2,
+    "ctr": 0.0222,
+    "averagePosition": 10.37
+  },
+  "queryEvidence": [
+    {"query": "callahan reef saginaw bay", "impressions": 4, "clicks": 0, "averagePosition": 8.5},
+    {"query": "callahan reef saginaw bay map", "impressions": 2, "clicks": 0, "averagePosition": 4.0},
+    {"query": "saginaw bay boat launches", "impressions": 2, "clicks": 0, "averagePosition": 11.5}
+  ],
+  "treatment": {
+    "title": "Saginaw Bay Fishing Map: Launches, Buoys & Callahan Reef",
+    "h1": "Saginaw Bay Fishing Map",
+    "firstAnswer": "Use this Saginaw Bay fishing map to locate 10 public launches, three live NOAA wind stations, Callahan Reef, the shipping channel, Spoils Island, Wildfowl Bay, and other named water across the Inner, Lower, and Eastern Bay.",
+    "canonical": "https://saginawbay.chrisizworski.com/map.html",
+    "dateModified": "2026-08-23"
+  },
+  "target": {
+    "ctr": 0.03,
+    "stretchCtr": 0.04,
+    "averagePositionMax": 10.0,
+    "stretchAveragePositionMax": 8.5
+  },
+  "stopLoss": {
+    "averagePositionWorseThan": 14,
+    "rule": "Roll back the search-facing overlay if a meaningful 28-day sample loses rank beyond 14 or materially reduces qualified CTR."
+  },
+  "freezeDuringWindow": ["title", "metaDescription", "h1", "firstAnswer", "structuredData", "canonical", "indexability"],
+  "releaseDate": null,
+  "evaluationWindow": null
+}
