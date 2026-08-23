@@ -1,7 +1,6 @@
 import { readFile } from 'node:fs/promises';
-import path from 'node:path';
 
-const sourcePath = path.join(process.cwd(), 'public', 'map.html');
+const sourcePath = new URL('../public/map.html', import.meta.url);
 
 const replacements = [
   [
