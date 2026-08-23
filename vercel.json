@@ -1,5 +1,8 @@
 {
   "outputDirectory": "public",
+  "rewrites": [
+    { "source": "/map.html", "destination": "/api/map-search" }
+  ],
   "headers": [
     { "source": "/bay.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }] }
   ]
