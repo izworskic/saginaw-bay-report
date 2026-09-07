@@ -1,0 +1,9 @@
+{
+  "name": "saginaw-bay-report",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Saginaw Bay fishing conditions report, static build with a GA4/AdSense injection step.",
+  "scripts": {
+    "build": "node scripts/inject-ga4.mjs"
+  }
+}
