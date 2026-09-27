@@ -1,10 +1,21 @@
 {
-  "buildCommand": "node scripts/inject-ga4.mjs",
+  "buildCommand": "node scripts/inject-ga4.mjs && node scripts/inject-network-ads.mjs public",
   "outputDirectory": "public",
   "rewrites": [
-    { "source": "/map.html", "destination": "/api/map-search" }
+    {
+      "source": "/map.html",
+      "destination": "/api/map-search"
+    }
   ],
   "headers": [
-    { "source": "/bay.js", "headers": [{ "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }] }
+    {
+      "source": "/bay.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, must-revalidate"
+        }
+      ]
+    }
   ]
 }
