@@ -688,6 +688,8 @@ def build_launches():
         '<p>The rule is simple even though the bay is not. Launch on the shore the wind is coming from. That shore '
         'has no fetch behind it, so the water at the ramp is flat and loading and unloading is easy. Launching on '
         'the downwind shore in a real blow means a wet, difficult ramp and a beam sea the moment you clear it.</p>'
+        '<p>For other launch locations around the Great Lakes, use the '
+        '<a href="https://chrisizworski.com/michigan-boat-launches/">Michigan Boat Launch Finder</a>.</p>'
         '<div class="tbl-wrap"><table><thead><tr><th>Wind from</th><th>Launch side</th><th>Notes</th></tr></thead><tbody>'
         '<tr><td class="num">W, SW</td><td>West shore</td>'
         '<td>Linwood, Pinconning, Au Gres. Flat at the ramp, and a short run to fish the edge of the stain.</td></tr>'
