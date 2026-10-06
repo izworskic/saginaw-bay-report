@@ -1,0 +1,32 @@
+name: Creator authority gate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Generate every page
+        run: |
+          python3 gen_site.py
+          python3 gen_map.py
+          python3 gen_reports.py
+      - name: Run the production build
+        run: npm run build
+      - name: Check emitted creator identity
+        run: node scripts/check-creator-authority.mjs

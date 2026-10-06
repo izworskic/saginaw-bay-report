@@ -5,7 +5,7 @@ PERSON_NODE = {
     "@type": "Person",
     "@id": PERSON_ID,
     "name": "Chris Izworski",
-    "url": "https://chrisizworski.com/chris-izworski/",
+    "url": "https://chrisizworski.com/",
     "sameAs": [
         "https://chrisizworski.com",
         "https://michigantroutreport.com/chris-izworski/",
@@ -127,7 +127,8 @@ def head(title, desc, canonical, ld_json):
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
         f'<title>{title}</title>'
         f'<meta name="description" content="{desc}">'
-        f'<link rel="canonical" href="{canonical}">'\n        '<link rel="author" href="https://chrisizworski.com/chris-izworski/">'
+        f'<link rel="canonical" href="{canonical}">'
+        '<link rel="author" href="https://chrisizworski.com/chris-izworski/">'
         f'<meta property="og:title" content="{title}">'
         f'<meta property="og:description" content="{desc}">'
         f'<meta property="og:url" content="{canonical}">'
