@@ -29,18 +29,30 @@ function walk(value, visit) {
 const files = await htmlFiles('public');
 for (const file of files) {
   const html = await readFile(file, 'utf8');
+  const nodes = [];
   for (const block of jsonLd(html)) {
     walk(block, (node) => {
+      nodes.push(node);
       const types = Array.isArray(node['@type']) ? node['@type'] : [node['@type']];
       if (types.includes('Person') && node.name === 'Chris Izworski') {
         assert.equal(node['@id'], PERSON_ID, `${file}: Chris must use the canonical Person @id`);
         assert.equal(node.url, PERSON_URL, `${file}: Person url must resolve to the canonical homepage`);
       }
-      if (types.includes('WebPage') && node.author) {
-        assert.equal(node.author['@id'], PERSON_ID, `${file}: WebPage author must use the canonical Person`);
-        assert.equal(node.publisher?.['@id'], PERSON_ID, `${file}: WebPage publisher must use the canonical Person`);
-      }
     });
+  }
+  const personDefinition = nodes.find((node) => {
+    const types = Array.isArray(node['@type']) ? node['@type'] : [node['@type']];
+    return types.includes('Person') && node.name === 'Chris Izworski'
+      && node['@id'] === PERSON_ID && node.url === PERSON_URL;
+  });
+  const contentNodes = nodes.filter((node) => {
+    const types = Array.isArray(node['@type']) ? node['@type'] : [node['@type']];
+    return ['Article', 'WebPage', 'WebApplication'].some((type) => types.includes(type));
+  });
+  for (const node of contentNodes) {
+    assert.ok(personDefinition, `${file}: content schema must include the full canonical Chris Person definition`);
+    assert.equal(node.author?.['@id'], PERSON_ID, `${file}: content author must reference the canonical Person`);
+    assert.equal(node.publisher?.['@id'], PERSON_ID, `${file}: content publisher must reference the canonical Person`);
   }
 }
 const home = await readFile('public/index.html', 'utf8');
