@@ -95,7 +95,7 @@ def build_map():
          "description": "Interactive Saginaw Bay map showing public boat launches, live NOAA buoys, and the "
                         "named water anglers actually use, split across the Inner, Lower, and Eastern Bay.",
          "isPartOf": {"@id": SITE + "/#website"}, "inLanguage": "en-US",
-         "author": {"@id": PERSON_ID}, "breadcrumb": {"@id": url + "#breadcrumb"}},
+         "author": {"@id": PERSON_ID}, "publisher": {"@id": PERSON_ID}, "breadcrumb": {"@id": url + "#breadcrumb"}},
         breadcrumb([("Saginaw Bay Report", SITE + "/"), ("Map", url)]),
         {"@type": "ItemList", "@id": url + "#launches", "name": "Saginaw Bay public boat launches",
          "numberOfItems": len(LAUNCHES),
