@@ -78,6 +78,8 @@ def build_index():
         '<td class="num" data-f="atmp">...</td><td data-f="status">...</td></tr>'
         '</tbody></table></div>'
         '<p class="note" id="buoy-stamp">Loading buoy observations.</p>'
+        '<p class="note">Compare these three bay stations with other Great Lakes readings on the '
+        '<a href="https://chrisizworski.com/great-lakes-buoys/">Great Lakes Buoy Dashboard</a>.</p>'
         '<p class="note">Choosing a ramp for these conditions? <a href="/launches-and-access.html">Use the shore-access guide</a> with today\'s wind read.</p>'
 
         '<h2>Why wind is the whole story here</h2>'
