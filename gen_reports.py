@@ -73,7 +73,7 @@ def build_reports():
          "description": "The live National Weather Service marine forecast for Inner and Outer Saginaw Bay, "
                         "plus every fishing report source worth reading and how current each one actually is.",
          "isPartOf": {"@id": SITE + "/#website"}, "inLanguage": "en-US",
-         "author": {"@id": PERSON_ID}, "breadcrumb": {"@id": url + "#breadcrumb"}},
+         "author": {"@id": PERSON_ID}, "publisher": {"@id": PERSON_ID}, "breadcrumb": {"@id": url + "#breadcrumb"}},
         breadcrumb([("Saginaw Bay Report", SITE + "/"), ("Reports", url)]),
         {"@type": "ItemList", "@id": url + "#sources", "name": "Saginaw Bay fishing report sources",
          "numberOfItems": len(SOURCES),
