@@ -44,7 +44,7 @@ def build_index():
          "name": "Saginaw Bay Fishing Report: Live Wind, Lee Shore, and Launch Conditions",
          "description": "Live wind from three Saginaw Bay buoys, a lee shore read for walleye and perch anglers, "
                         "river flow, and launch guidance for both shores.",
-         "inLanguage": "en-US", "author": {"@id": PERSON_ID},
+         "inLanguage": "en-US", "author": {"@id": PERSON_ID}, "publisher": {"@id": PERSON_ID},
          "breadcrumb": {"@id": url + "#breadcrumb"},
          "about": {"@type": "Place", "name": "Saginaw Bay",
                    "geo": {"@type": "GeoCoordinates", "latitude": 43.9, "longitude": -83.65}}},
@@ -53,6 +53,7 @@ def build_index():
     ]}
     body = (
         header("/") +
+        '<h1 style="font-size:30px;margin:22px 0 0">Saginaw Bay Fishing Report: Live Wind and Shore Conditions</h1>'
         '<p class="lede">On a bay this shallow the wind decides everything. It decides which shore you can launch '
         'from, which shore the water piles onto, and where the fish end up. This reads live wind from three bay '
         'buoys and tells you both halves of that answer, including the part most tools leave out: the shore holding '
@@ -77,6 +78,7 @@ def build_index():
         '<td class="num" data-f="atmp">...</td><td data-f="status">...</td></tr>'
         '</tbody></table></div>'
         '<p class="note" id="buoy-stamp">Loading buoy observations.</p>'
+        '<p class="note">Choosing a ramp for these conditions? <a href="/launches-and-access.html">Use the shore-access guide</a> with today\'s wind read.</p>'
 
         '<h2>Why wind is the whole story here</h2>'
         '<p>Saginaw Bay covers well over a thousand square miles and almost none of it is deep. The inner bay does '
@@ -529,7 +531,7 @@ def build_zone(s):
          "description": f"Live wind and conditions for the Saginaw Bay {s['name'].lower()}: {s['subtitle']}, "
                         f"{s['depths']}, with local fishing notes and when this zone is in the lee.",
          "isPartOf": {"@id": SITE + "/#website"}, "inLanguage": "en-US",
-         "author": {"@id": PERSON_ID}, "breadcrumb": {"@id": url + "#breadcrumb"}},
+         "author": {"@id": PERSON_ID}, "publisher": {"@id": PERSON_ID}, "breadcrumb": {"@id": url + "#breadcrumb"}},
         breadcrumb([("Saginaw Bay Report", SITE + "/"), (s["name"], url)]),
         PERSON_NODE,
     ]}
