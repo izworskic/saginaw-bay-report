@@ -1,0 +1,27 @@
+/* Source-owned Spring Walleye field desk. The numbers are gauges, not fish counts. */
+#spring-run{font-family:inherit;margin:27px 0 32px;padding:clamp(17px,3vw,30px);border:1px solid #b9c9c0;border-top:5px solid #356872;background:#f0f5f1;color:#203c39;border-radius:6px}
+#spring-run .spring-kicker{text-transform:uppercase;font:800 .69rem/1.4 system-ui,sans-serif;letter-spacing:.11em;color:#42635a}
+#spring-run h2{font-family:Fraunces,Georgia,serif;font-size:clamp(1.6rem,4vw,2.2rem);color:#183e42;line-height:1.2;margin:.25rem 0 .4rem}
+#spring-run .spring-intro{font-size:.96rem;line-height:1.6;max-width:68ch;margin:0 0 16px}
+#spring-run .spring-fields{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:0 0 15px}
+#spring-run label{display:grid;gap:4px;font:800 .79rem/1.4 system-ui,sans-serif;color:#37564e}
+#spring-region-select{font:600 .94rem/1.3 system-ui,sans-serif;padding:10px 12px;background:#fff;color:#173b37;border:1px solid #8da79d;border-radius:4px;max-width:100%;min-height:44px}
+#spring-run-refresh{font:800 .8rem/1.3 system-ui,sans-serif;padding:11px 13px;min-height:44px;border:1px solid #194b50;background:#194b50;color:#fff;border-radius:4px;cursor:pointer}
+#spring-run-refresh:disabled{opacity:.62;cursor:default}
+#spring-run :is(select,button,a):focus-visible{outline:3px solid #a96f22;outline-offset:3px}
+#spring-run-status{margin:14px 0 8px;font-size:.98rem;line-height:1.5;color:#1b443c}
+#spring-run-stations{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px;margin:12px 0}
+#spring-run .spring-station{padding:15px;background:white;border:1px solid #d2ddd5;border-radius:4px}
+#spring-run .spring-station h3{font:650 1.04rem/1.3 Fraunces,Georgia,serif;color:#214b4b;margin:0 0 10px}
+#spring-run .spring-metric{font:650 clamp(1.5rem,4vw,2.3rem)/1.05 Fraunces,Georgia,serif;letter-spacing:-.03em;color:#154753;margin:0 0 7px}
+#spring-run .spring-note{font-size:.83rem;line-height:1.5;color:#4b625b;margin:4px 0}
+#spring-run .spring-reading{font-size:.8rem;line-height:1.4;margin:5px 0;color:#304d49}
+#spring-run .spring-source{display:inline-block;margin-top:8px;font-size:.77rem;font-weight:800;color:#115a66}
+#spring-run .spring-evidence{margin:14px 0 0;padding-top:12px;border-top:1px solid #b9c9c0}
+#spring-run .spring-evidence h3{font-size:1rem;margin:0 0 7px}
+#spring-run #spring-reports{padding-left:18px;margin:8px 0}
+#spring-run .spring-report{margin-bottom:8px;line-height:1.45}
+#spring-run .spring-report-date{display:block;font-size:.75rem;color:#5b6a61}
+#spring-run a{color:#165868;text-underline-offset:3px}
+#spring-run #spring-run-updated{font-size:.75rem;line-height:1.5;color:#51665e;margin:14px 0 0}
+@media(max-width:480px){#spring-run .spring-fields{display:grid;grid-template-columns:minmax(0,1fr)}#spring-run-refresh{justify-self:start}}
