@@ -1,0 +1,27 @@
+<section id="spring-run" aria-labelledby="spring-run-title">
+  <div class="spring-kicker">Spring river watch · Great Lakes watershed</div>
+  <h2 id="spring-run-title">What does the water say before the walleye run?</h2>
+  <p class="spring-intro">The Saginaw and Tittabawassee are our home waters. Compare their measured temperature and flow with the Detroit, Maumee and Sandusky rivers. These gauges describe water, not where fish are or whether fishing is permitted.</p>
+  <div class="spring-fields">
+    <label for="spring-region-select">Choose a river system
+      <select id="spring-region-select">
+        <option value="saginaw">Saginaw River system</option>
+        <option value="detroit">Detroit River</option>
+        <option value="maumee">Maumee River</option>
+        <option value="sandusky">Sandusky River</option>
+      </select>
+    </label>
+    <button type="button" id="spring-run-refresh">Refresh USGS observations</button>
+  </div>
+  <p id="spring-run-status" role="status" aria-live="polite"><strong>Checking official gauge observations.</strong></p>
+  <div id="spring-run-stations"><p>Current measurements appear here when an official gauge responds.</p></div>
+  <section class="spring-evidence" aria-label="Official fishing and historical sources">
+    <h3>What do fisheries reports actually say?</h3>
+    <p id="spring-evidence-status">River temperature does not confirm a spawning run. The dated source below provides context only.</p>
+    <ul id="spring-reports"><li>Official historical fishery reports will appear when the river data is loaded.</li></ul>
+    <p><a id="spring-official-report" href="https://www.michigan.gov/dnr/things-to-do/fishing/weekly">Michigan DNR fishing reports</a></p>
+    <p><a href="https://www.michigan.gov/dnr/things-to-do/fishing/regulations">Check current Michigan fishing regulations</a></p>
+  </section>
+  <p id="spring-run-updated">Station readings are not a current fish report. If this live view cannot load, visit <a href="https://waterdata.usgs.gov/">USGS Water Data</a> to inspect measured conditions.</p>
+  <noscript><p>The live comparison requires JavaScript. Start with the <a href="https://waterdata.usgs.gov/monitoring-location/04157005/">Saginaw River USGS gauge</a> and the <a href="https://www.michigan.gov/dnr/things-to-do/fishing/weekly">official Michigan DNR fishing reports</a>.</p></noscript>
+</section>
