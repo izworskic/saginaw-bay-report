@@ -279,7 +279,7 @@ def build_walleye():
         '<p class="lede">The bay holds one of the densest walleye populations in the Great Lakes, and the fish are '
         'not in the same place twice. The year has a shape, and knowing it saves more time than any lure choice.</p>'
         + live_block() +
-
+        (OUT.parent / "spring-walleye-widget.html").read_text(encoding="utf-8") +
         '<h2>Spring: the river run</h2>'
         '<p>Walleye move out of the bay and up the rivers to spawn, and the Saginaw system is the big one. Fish push '
         'up the Saginaw and into the Tittabawassee, with the run generally building through late March and into '
@@ -336,7 +336,8 @@ def build_walleye():
         "Saginaw Bay Walleye: Spring Run, Summer Trolling, and the Fall Bite",
         "The Saginaw Bay walleye year in order: the spring run up the Saginaw and Tittabawassee, the post spawn "
         "migration north toward Au Gres and Tawas, summer trolling, and the fall bite that produces the biggest fish.",
-        url, ld) + body)
+        url, ld).replace("</head>", '<link rel="stylesheet" href="/spring-walleye.css"></head>') +
+        body.replace("</body>", '<script src="/spring-walleye.js" defer></script></body>'))
 
 
 # ------------------------------------------------------------------ perch
