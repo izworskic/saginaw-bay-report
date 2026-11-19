@@ -1,0 +1,46 @@
+name: Spring Walleye Source Owner Acceptance
+on:
+  pull_request:
+    paths:
+      - "api/spring-walleye.js"
+      - "api/_lib/spring-walleye*"
+      - "public/spring-walleye*"
+      - "public/walleye.html"
+      - "spring-walleye-widget.html"
+      - "gen_site.py"
+      - "tests/spring-walleye-owner.test.cjs"
+      - ".github/workflows/spring-walleye-owner.yml"
+  push:
+    branches: [main]
+    paths:
+      - "api/spring-walleye.js"
+      - "api/_lib/spring-walleye*"
+      - "public/spring-walleye*"
+      - "public/walleye.html"
+      - "spring-walleye-widget.html"
+      - "gen_site.py"
+      - "tests/spring-walleye-owner.test.cjs"
+      - ".github/workflows/spring-walleye-owner.yml"
+permissions:
+  contents: read
+jobs:
+  spring-truth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Parse the client and official source adapters
+        run: |
+          node --check public/spring-walleye.js
+          node --check api/spring-walleye.js
+          node --check api/_lib/spring-walleye-usgs.js
+      - name: Verify measured-water and historical-report contracts
+        run: node --test tests/spring-walleye-owner.test.cjs
+      - name: Regenerate the canonical guide from the real source
+        run: |
+          python3 gen_site.py
+          git diff --exit-code -- public/walleye.html
+          node --test tests/spring-walleye-owner.test.cjs
